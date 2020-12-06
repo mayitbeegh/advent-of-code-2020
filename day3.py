@@ -1,8 +1,11 @@
 def part_one(inputs):
     return traverse_slope(inputs, 3, 1)
 
+
 def part_two(inputs):
-    return traverse_slope(inputs, 1, 1) * traverse_slope(inputs, 3, 1) * traverse_slope(inputs, 5, 1) * traverse_slope(inputs, 7, 1) * traverse_slope(inputs, 1, 2)
+    return traverse_slope(inputs, 1, 1) * traverse_slope(inputs, 3, 1) * traverse_slope(inputs, 5, 1) * traverse_slope(
+        inputs, 7, 1) * traverse_slope(inputs, 1, 2)
+
 
 def traverse_slope(inputs, right, down):
     row = down
@@ -13,7 +16,8 @@ def traverse_slope(inputs, right, down):
         path += inputs[row][column]
         row += down
         column += right
-    return path.count('#')   
+    return path.count('#')
+
 
 test_inputs = """..##.........##.........##.........##.........##.........##.......
 #...#...#..#...#...#..#...#...#..#...#...#..#...#...#..#...#...#..

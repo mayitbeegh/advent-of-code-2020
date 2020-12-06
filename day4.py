@@ -1,12 +1,18 @@
 import re
+
+
 def part_one(passports):
     return len(list(filter(check_required_fields_exist, passports)))
+
 
 def check_required_fields_exist(passport):
     return {'byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid'}.issubset(passport)
 
+
 def filter_byr_iyr_eyr(passport):
-    return 1920 <= int(passport['byr']) <= 2002 and 2010 <= int(passport['iyr']) <= 2020 and 2020 <= int(passport['eyr']) <= 2030
+    return 1920 <= int(passport['byr']) <= 2002 and 2010 <= int(passport['iyr']) <= 2020 and 2020 <= int(
+        passport['eyr']) <= 2030
+
 
 def filter_hgt(passport):
     if 'cm' in passport['hgt']:
@@ -16,38 +22,48 @@ def filter_hgt(passport):
     else:
         return False
 
-assert filter_hgt({'hgt':'149cm'}) == False
-assert filter_hgt({'hgt':'150cm'}) == True
-assert filter_hgt({'hgt':'58in'}) == False
-assert filter_hgt({'hgt':'59in'}) == True
+
+assert filter_hgt({'hgt': '149cm'}) == False
+assert filter_hgt({'hgt': '150cm'}) == True
+assert filter_hgt({'hgt': '58in'}) == False
+assert filter_hgt({'hgt': '59in'}) == True
+
 
 def filter_hcl(passport):
     return re.fullmatch(r'#[0-9|a-f]{6}', passport['hcl']) != None
 
-assert filter_hcl({'hcl':'#123abc'}) == True
-assert filter_hcl({'hcl':'123abc'}) == False
-assert filter_hcl({'hcl':'#123ab'}) == False
-assert filter_hcl({'hcl':'#123abg'}) == False
+
+assert filter_hcl({'hcl': '#123abc'}) == True
+assert filter_hcl({'hcl': '123abc'}) == False
+assert filter_hcl({'hcl': '#123ab'}) == False
+assert filter_hcl({'hcl': '#123abg'}) == False
+
 
 def filter_ecl(passport):
     return passport['ecl'] in ['amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth']
 
-assert filter_ecl({'ecl':'amb'}) == True
-assert filter_ecl({'ecl':'wht'}) == False
+
+assert filter_ecl({'ecl': 'amb'}) == True
+assert filter_ecl({'ecl': 'wht'}) == False
+
 
 def filter_pid(passport):
     return re.fullmatch(r'[0-9]{9}', passport['pid']) != None
 
-assert filter_pid({'pid':'000000001'}) == True
-assert filter_pid({'pid':'0123456789'}) == False
 
+assert filter_pid({'pid': '000000001'}) == True
+assert filter_pid({'pid': '0123456789'}) == False
 
 
 def part_two(passports):
-    return len(list(filter(lambda x: all(f(x) for f in [check_required_fields_exist, filter_byr_iyr_eyr, filter_ecl, filter_hcl, filter_hgt, filter_pid]), passports)))
+    return len(list(filter(lambda x: all(f(x) for f in
+                                         [check_required_fields_exist, filter_byr_iyr_eyr, filter_ecl, filter_hcl,
+                                          filter_hgt, filter_pid]), passports)))
+
 
 def preprocess(raw_input):
-    return [{f.split(':')[0]:f.split(':')[1] for f in t.split()} for t in raw_input.split('\n\n')]
+    return [{f.split(':')[0]: f.split(':')[1] for f in t.split()} for t in raw_input.split('\n\n')]
+
 
 test_inputs = preprocess("""ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
 byr:1937 iyr:2017 cid:147 hgt:183cm
